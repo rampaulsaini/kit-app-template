@@ -299,3 +299,7 @@ To learn more about what data is collected, how we use it and how you can change
 ## Contributing
 
 We provide this source code as-is and are currently not accepting outside contributions.
+नमस्ते — क्षमा करें, यह PR गलती से मेरी ओर से खुल गया था. 
+यह changes इस upstream repository के scope का हिस्सा नहीं हैं. 
+मैं इसे बंद कर रहा/रही हूँ. धन्यवाद कि आपने मुझे सूचित किया.
+— @rampaulsaini
