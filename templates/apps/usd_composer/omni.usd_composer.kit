@@ -50,7 +50,6 @@ template_name = "omni.usd_composer"
 "omni.kit.collaboration.telemetry" = {}
 "omni.kit.collaboration.viewport.camera" = {}
 "omni.kit.context_menu" = {}
-"omni.kit.converter.cad" = {order = 1000} # allow other deps like asset_importer to load first
 "omni.kit.developer.bundle" = {}
 "omni.kit.graph.delegate.default" = {}
 "omni.kit.hotkeys.window" = {}
@@ -107,6 +106,7 @@ template_name = "omni.usd_composer"
 "omni.kit.widget.layers" = {}
 "omni.kit.widget.live" = {}
 "omni.kit.viewport.scene_camera_model" = {}
+"omni.kit.widget.cache_indicator" = {}
 "omni.kit.widget.timeline" = {}
 "omni.kit.widget.versioning" = {}
 "omni.kit.widgets.custom" = {}
@@ -149,13 +149,15 @@ template_name = "omni.usd_composer"
 
 [dependencies."filter:platform"."windows-x86_64"]
 "omni.kit.window.modifier.titlebar" = {version = "=107.0.1"}  # Use exact version to avoid supported target platform check
+"omni.kit.converter.cad" = {order = 1000} # allow other deps like asset_importer to load first
 
+[dependencies."filter:platform"."linux-x86_64"]
+"omni.kit.converter.cad" = {order = 1000} # allow other deps like asset_importer to load first
 
 [settings.app]
 content.emptyStageOnStart = false
 fastShutdown = true
 name = "{{ application_display_name }}"
-useFabricSceneDelegate = true  # Turn on the Fabric scene delegate by default
 show_developer_preference_section = false
 
 
@@ -223,6 +225,7 @@ defaults.fillViewport = true
 experience = "{{ application_display_name }}"
 
 [settings.exts]
+"omni.activity.ui".auto_save_location = ""
 "omni.kit.menu.utils".logDeprecated = false
 "omni.kit.mesh.raycast".bvhBuildOnFirstRequired = true
 "omni.kit.renderer.core".imgui.enableMips = true
@@ -342,13 +345,10 @@ communityTabEnabled = true
 crashreporter.compressDumpFiles = true
 foundation.verifyOsVersion.enabled = false
 plugins.'carb.profiler-cpu.plugin'.filePath = "${shared_documents}/create_profile.ct.json.gz"
-privacy.externalBuild = true
 renderer.active = "rtx" # RTX As the default renderer always
 renderer.enabled = "rtx"  # iray, pxr
 structuredLog.enable = true
-
-
-[settings.telemetry]
-# Anonymous Kit application usage telemetry
-enableAnonymousAppName = true
-enableAnonymousData = true
+telemetry.disableInternalSessionCheck = true
+telemetry.enableAnonymousAppName = true
+telemetry.enableAnonymousData = true
+privacy.externalBuild = true

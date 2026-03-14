@@ -31,7 +31,6 @@ template_name = "omni.usd_explorer"
 "omni.kit.collaboration.telemetry" = {}
 "omni.kit.collaboration.viewport.camera" = {}
 "omni.kit.context_menu" = {}
-"omni.kit.converter.cad" = {order = 1000} # allow other deps like asset_importer to load first
 "omni.kit.developer.bundle" = {}
 "omni.kit.manipulator.camera" = {} # Manipulator for the Viewport
 "omni.kit.manipulator.prim" = {}
@@ -73,6 +72,7 @@ template_name = "omni.usd_explorer"
 "omni.kit.viewport.scene_camera_model" = {}  # Push camera changes to Viewport ui.scene as fast as possible
 "omni.kit.viewport.window" = {}
 "omni.kit.waypoint.playlist" = {}
+"omni.kit.widget.cache_indicator" = {}
 "omni.kit.widget.filebrowser" = {} # General purpose widgets to browsder and select fles
 "omni.kit.widget.layers" = {}
 "omni.kit.widget.live" = {}  # Includes Cache status display
@@ -106,11 +106,14 @@ template_name = "omni.usd_explorer"
 
 [dependencies."filter:platform"."windows-x86_64"]
 "omni.kit.window.modifier.titlebar" = {version = "=107.0.1"}  # Use exact version to avoid supported target platform check
+"omni.kit.converter.cad" = {order = 1000} # allow other deps like asset_importer to load first
+
+[dependencies."filter:platform"."linux-x86_64"]
+"omni.kit.converter.cad" = {order = 1000} # allow other deps like asset_importer to load first
 
 [settings.app]
 name = "{{ application_display_name }}"
 fastShutdown = true  # Fast shutdown by default
-useFabricSceneDelegate = true  # Turn on the Fabric scene delegate by default
 
 [settings.app.content]
 emptyStageOnStart = true # This will create a stage during the startup process.
@@ -277,6 +280,9 @@ compressDumpFiles = true
 
 [settings.crashreporter.data]
 experience = "{{ application_display_name }}"
+
+[settings.exts."omni.activity.ui"]
+auto_save_location = ""
 
 [settings.ext."omni.kit.widget.viewport".sceneView.singleCameraModel]
 enabled = true  # Enable single Viewport camera model (setting w/ typo in current Kit)
@@ -581,9 +587,6 @@ autoLightRig.enabled = true
 [settings.persistent.exts."omni.kit.viewport.window"]
 cameraSpeedMessage.showFlyViewLock = true
 
-[settings.privacy]
-externalBuild = true
-
 [settings.renderer]
 active = "rtx"  # RTX As the default renderer always
 enabled = "rtx"  # only enable rtx renderer by default
@@ -634,10 +637,11 @@ useUniformsReindexing = true
 [settings.structuredLog]
 enable = true
 
-[settings.telemetry]
-# Anonymous Kit application usage telemetry
-enableAnonymousData = true
-enableAnonymousAppName = true
+[settings]
+telemetry.disableInternalSessionCheck = true
+telemetry.enableAnonymousAppName = true
+telemetry.enableAnonymousData = true
+privacy.externalBuild = true
 
 
 [[test]]

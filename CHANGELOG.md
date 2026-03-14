@@ -2,6 +2,64 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [110.0.0] - 2026-03-05
+
+### Changed
+- Update to `Kit 110.0.0`
+  - [Kit 110.0 Release Notes](https://docs.omniverse.nvidia.com/dev-guide/latest/release-notes/110_0.html)
+  - [Kit 110.0 Release Highlights](https://docs.omniverse.nvidia.com/dev-guide/latest/release-notes/110_0_highlights.html)
+- Updated `stage_management.py` in `usd_viewer.messaging` extension template to make prims selectable in viewport and updated `omni.usd.StageEventType` to `ASSETS_LOADED` to fix camera exposure when resetting the camera in Web-Viewer-Sample front-end client.
+
+## [109.0.3] - 2026-01-26
+
+### Changed
+- Update to `Kit 109.0.3`
+  - [Kit 109.0.3 Release Notes](https://docs.omniverse.nvidia.com/dev-guide/latest/release-notes/109_0_3.html)
+
+## [109.0.2] - 2025-12-18
+
+### Changed
+- Updated to `Kit 109.0.2`
+  - [Kit 109.0.2 Release Notes](https://docs.omniverse.nvidia.com/dev-guide/latest/release-notes/109_0_2.html)
+  
+## [109.0.1] - 2025-12-04
+
+### Added
+- Kit added support for ARM64
+
+### Changed
+- Updated to `Kit 109.0.1`
+  - [Kit 109.0.1 Release Notes](https://docs.omniverse.nvidia.com/dev-guide/latest/release-notes/109_0_1.html)
+  - [Kit 109.0.1 Release Highlights](https://docs.omniverse.nvidia.com/dev-guide/latest/release-notes/109_0_1_highlights.html)
+- Tooling in tools/repoman was upstreamed to `repo_kit_tools`
+- `repo package_container` replaces `repo package --container`
+- `repo package` is now mapped to the `repo_package_app` tool in `repo_kit_tools`. It still uses the repo_package configuration in our repo.toml.
+- Containerization files in tools/containers have been removed. They are now generated in an automated fashion during containerization by `repo package_container --app ${path_to_kit_file}`. You can generate and not containerize by running `repo package_container --app ${path_to_kit_file} --generate`
+- Default image tag name changed from `kit-app-template:latest` to `appname:latest`. eg: `usd-viewer_nvcf:latest`
+- Container `--name` updated to `--image-tag` supporting both image name and image tag `--image-tag [container_image_name:container_image_tag]`
+- Updated required driver version `>=550.54.15` (Linux) or `>=551.78` (Windows).
+
+### Deprecated
+- tools/containers `entrypoint_memcached.sh.j2` now migrated to generated `entrypoint.sh`
+- tools/containers `kit_args.txt` now migrated to generated `entrypoint.sh`
+- tools/containers `Stream_sdk.txt` now migrated to generated `Dockerfile`
+
+### Known Issue
+- Basic C++ w/ Python Binding Extension test fails due to test environment configuration
+
+## [109.0.0] - 2025-11-18
+
+### Added
+- Added new Livestream extensions `omni.kit.livestream.aov` and `omni.services.livestream.webrtc` 
+
+### Changed
+- Updated to `Kit 109.0.0`
+  - [Kit 109.0 Release Notes](https://docs.omniverse.nvidia.com/dev-guide/latest/release-notes/109_0.html)
+  - [Kit 109.0 Release Highlights](https://docs.omniverse.nvidia.com/dev-guide/latest/release-notes/109_0_highlights.html)
+  - `useFabricSceneDelegate = true` removed. Fabric Scene Delegate (FSD) is now enabled by default in Kit 109.0. Applications no longer need to explicitly enable FSD in `.kit` configuration files.
+  - `auto_load_usd` for USD Viewer now supports relative paths
+  - Set custom orientations for `UsdLux 25.05` for Y-up and Z-up stages in USD Explorer template and set `inputs:normalize = true` on that template's distant light.
+
 ## [108.1.0] - 2025-10-06
 
 ### Added
@@ -16,7 +74,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Deprecated
 - Deprecated `omni.kit.ngsearch` extension, no longer available after Kit 108
 
-
 ## [108.0.0] - 2025-08-12
 
 ### Changed
@@ -28,7 +85,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Removed omni.services.transport.server.http.port overrides.  Aligned all template applications to use default ports.
 - Updated repository documentation to reflect changes in streaming changes.
 - Updated crash reporter settings to compress crash reports.
-- Update Windows `omni.kit.window.modifier.titlebar` extension version
+- Update Windows `omni.kit.window.modifier.titlebar` extension version 
 - Update repo tooling to most recent versions
 - Updated application icon images for Composer and Explorer templates
 - Enabled testing for USD Viewer Template messaging extension
@@ -49,7 +106,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [107.2.0] - 2025-05-05
 
-### Added
+### Added 
 - Added tooltip information to the VSCode debug extensions to clarify usage.
 - Added tooling checks for path whitespace and OneDrive paths to improve developer experience.
 
