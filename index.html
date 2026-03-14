@@ -1,1 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>꙰ C-Labs — Shromani Creative Laboratory | NVIDIA Omniverse</title>
+<meta name="description" content="C-Labs — Shromani Rampaul Saini Creative Laboratory. NVIDIA Omniverse experiments, prototypes, and creative 3D innovations. OpenUSD · RTX · Physical AI.">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=Share+Tech+Mono&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --void:#02000a;--deep:#050010;--surf:#08001a;--card:#0d0025;--lift:#120030;
+  --nv:#76b900;--nv2:#a0dc30;
+  --gold:#c9922a;--gl:#e8c060;--gx:#fce890;
+  --pu:#9b30ff;--pu2:#c070ff;--pu3:#e0b0ff;
+  --cy:#00d4ff;--cyd:#005880;
+  --red:#ff3060;--redl:#ff6090;
+  --cream:#f0e8ff;--text:#c8b8e8;--muted:#706080;--dim:#302840;
+  --r1:1px solid rgba(155,48,255,.2);--r2:1px solid rgba(155,48,255,.4);
+  --rnv:1px solid rgba(118,185,0,.2);
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--void);color:var(--text);font-family:'Cinzel',serif;overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:2px}::-webkit-scrollbar-track{background:var(--void)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--pu),var(--pu2))}
 
+.cur{position:fixed;width:6px;height:6px;background:var(--pu3);border-radius:50%;
+  pointer-events:none;z-index:99999;transform:translate(-50%,-50%);mix-blend-mode:screen}
+.cur-r{position:fixed;width:26px;height:26px;border:1px solid rgba(155,48,255,.6);
+  border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:all .15s}
+
+#cosmos{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* NEBULA BG */
+.nebula{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.nb1{width:400px;height:300px;background:radial-gradient(circle,rgba(155,48,255,.12),transparent);top:-100px;right:-100px;animation:nbFloat1 15s ease-in-out infinite}
+.nb2{width:300px;height:400px;background:radial-gradient(circle,rgba(0,212,255,.08),transparent);bottom:-100px;left:-100px;animation:nbFloat2 20s ease-in-out infinite}
+.nb3{width:500px;height:300px;background:radial-gradient(circle,rgba(118,185,0,.06),transparent);top:40%;left:50%;transform:translateX(-50%);animation:nbFloat3 18s ease-in-out infinite}
+@keyframes nbFloat1{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,20px)}}
+@keyframes nbFloat2{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-30px)}}
+@keyframes nbFloat3{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.1)}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:800;height:56px;
+  background:rgba(2,0,10,.97);backdrop-filter:blur(30px);
+  border-bottom:var(--r1);display:flex;align-items:center;padding:0 2rem;gap:1.2rem}
+.nav-clabs{font-family:'Cinzel Decorative',serif;font-size:.75rem;letter-spacing:.2em;
+  background:linear-gradient(135deg,var(--pu),var(--pu2),var(--cy));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-sep{color:var(--dim)}
+.nav-nv{font-size:.55rem;letter-spacing:.15em;color:var(--nv);text-transform:uppercase}
+.nav-badge-pu{background:linear-gradient(135deg,var(--pu),var(--pu2));color:white;
+  font-size:.42rem;letter-spacing:.1em;padding:.15rem .5rem;text-transform:uppercase}
+.nav-links{margin-left:auto;display:flex;gap:.2rem;list-style:none}
+.nav-links a{padding:.3rem .8rem;height:56px;line-height:56px;display:block;
+  font-size:.42rem;letter-spacing:.18em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .3s;white-space:nowrap}
+.nav-links a:hover{color:var(--pu2)}
+
+#hero{position:relative;min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:90px 1.5rem 60px;overflow:hidden;z-index:2}
+
+.h-badge{display:flex;align-items:center;gap:.6rem;border:var(--r1);padding:.4rem 1rem;
+  background:rgba(155,48,255,.06);margin-bottom:1.5rem;font-size:.5rem;letter-spacing:.25em;
+  color:var(--pu2);text-transform:uppercase;animation:fadeUp 1s .1s both}
+.pulse-dot{width:6px;height:6px;background:var(--pu2);border-radius:50%;animation:pdPulse 2s infinite}
+@keyframes pdPulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(155,48,255,.5)}50%{opacity:.5;box-shadow:0 0 0 8px rgba(155,48,255,0)}}
+
+.h-title{font-family:'Cinzel Decorative',serif;font-size:clamp(2.5rem,7vw,5.5rem);
+  line-height:1;margin-bottom:.6rem;animation:fadeUp 1s .25s both}
+.h-title .c-word{background:linear-gradient(135deg,var(--pu),var(--pu2),var(--cy));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 30px rgba(155,48,255,.5))}
+.h-title .labs-word{color:var(--cream);text-shadow:0 0 30px rgba(155,48,255,.3)}
+.h-sub{font-family:'Share Tech Mono',monospace;font-size:clamp(.6rem,1.5vw,.78rem);
+  color:var(--muted);letter-spacing:.15em;margin-bottom:.5rem;animation:fadeUp 1s .35s both}
+.h-tagline{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.5vw,1.4rem);
+  font-style:italic;color:var(--pu3);margin-bottom:2rem;animation:fadeUp 1s .45s both}
+
+/* HEXAGON GRID */
+.hex-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;max-width:700px;
+  margin-bottom:2rem;animation:fadeUp 1s .55s both}
+.hex{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:110px;height:110px;background:rgba(155,48,255,.06);border:var(--r1);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  transition:all .35s;cursor:default;text-align:center;padding:.5rem}
+.hex:hover{background:rgba(155,48,255,.15);border-color:var(--pu2);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  transform:scale(1.08)}
+.hex-ic{font-size:1.4rem;display:block;margin-bottom:.3rem}
+.hex-t{font-size:.42rem;letter-spacing:.15em;color:var(--pu2);text-transform:uppercase}
+
+.h-ctas{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;animation:fadeUp 1s .65s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+.btn{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;padding:.7rem 1.5rem;
+  border:none;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:all .3s;text-decoration:none}
+.btn-pu{background:linear-gradient(135deg,var(--pu),var(--pu2));color:white;
+  box-shadow:0 4px 20px rgba(155,48,255,.35)}
+.btn-pu:hover{filter:brightness(1.2);box-shadow:0 8px 40px rgba(155,48,255,.55);transform:translateY(-2px)}
+.btn-ghost-pu{background:transparent;color:var(--pu2);border:var(--r1)}
+.btn-ghost-pu:hover{background:rgba(155,48,255,.08);border-color:var(--pu2);transform:translateY(-2px)}
+.btn-nv{background:var(--nv);color:var(--void);font-weight:700}
+.btn-nv:hover{background:var(--nv2);transform:translateY(-2px)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--dim));color:var(--cream)}
+.btn-gold:hover{filter:brightness(1.2);transform:translateY(-2px)}
+
+.dvd{display:flex;align-items:center;justify-content:center;padding:1rem 0;gap:1rem;z-index:2;position:relative}
+.dvd::before,.dvd::after{content:'';flex:1;height:1px}
+.dvd::before{background:linear-gradient(to right,transparent,rgba(155,48,255,.3))}
+.dvd::after{background:linear-gradient(to left,transparent,rgba(155,48,255,.3))}
+.dvd span{color:var(--pu2);font-size:.8rem;opacity:.5}
+
+.sec{padding:5rem 1.5rem;max-width:1100px;margin:0 auto;position:relative;z-index:2}
+.sec-full{padding:5rem 1.5rem;position:relative;z-index:2}
+.sec-full .in{max-width:1100px;margin:0 auto}
+.sec-ey{font-size:.52rem;letter-spacing:.45em;color:var(--pu2);text-transform:uppercase;
+  margin-bottom:.8rem;display:flex;align-items:center;gap:1rem}
+.sec-ey::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(155,48,255,.3),transparent)}
+.sec-h{font-family:'Cinzel Decorative',serif;font-size:clamp(1.3rem,3vw,2.2rem);
+  color:var(--cream);font-weight:400;line-height:1.2;margin-bottom:.7rem}
+.sec-p{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--muted);
+  line-height:2;margin-bottom:2rem;max-width:640px}
+
+/* LAB CARDS */
+.labs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(155,48,255,.08)}
+.lab-card{background:var(--surf);padding:1.8rem 1.5rem;position:relative;overflow:hidden;transition:all .35s}
+.lab-card::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(155,48,255,.06),transparent);opacity:0;transition:opacity .4s}
+.lab-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,var(--pu),var(--cy),transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform .5s}
+.lab-card:hover::before{opacity:1}.lab-card:hover::after{transform:scaleX(1)}
+.lab-card:hover{background:var(--lift)}
+.lc-num{font-size:.42rem;letter-spacing:.35em;color:var(--pu);text-transform:uppercase;margin-bottom:.5rem}
+.lc-icon{font-size:1.8rem;display:block;margin-bottom:.8rem}
+.lc-title{font-size:.75rem;color:var(--pu2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.lc-text{font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--muted);line-height:1.9}
+.lc-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.7rem}
+.lc-tag{font-size:.42rem;letter-spacing:.1em;padding:.1rem .4rem;border:1px solid rgba(155,48,255,.25);
+  color:var(--pu3);text-transform:uppercase}
+
+/* STATUS BOARD */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.8rem}
+.status-card{background:var(--surf);border:var(--r1);padding:1.2rem 1.4rem;transition:all .3s}
+.status-card:hover{border-color:var(--pu2);background:var(--lift)}
+.sc-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
+.sc-status{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sc-active{background:#27c93f;box-shadow:0 0 8px #27c93f}
+.sc-dev{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+.sc-plan{background:var(--cy);box-shadow:0 0 8px var(--cy)}
+.sc-name{font-size:.65rem;color:var(--cream);letter-spacing:.06em}
+.sc-desc{font-family:'Cormorant Garamond',serif;font-size:.83rem;color:var(--muted);line-height:1.75}
+.sc-bar{height:3px;background:var(--dim);border-radius:2px;margin-top:.7rem;overflow:hidden}
+.sc-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--pu),var(--cy));transition:width 1.5s ease}
+
+/* NVIDIA SECTION */
+.nv-section{background:var(--deep);border:var(--rnv);padding:2rem;margin-bottom:1rem}
+.nv-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
+.nv-logo-text{font-family:'Cinzel Decorative',serif;font-size:.8rem;color:var(--nv);letter-spacing:.15em}
+.nv-badge{font-size:.45rem;letter-spacing:.15em;background:var(--nv);color:var(--void);padding:.15rem .5rem;font-weight:700;text-transform:uppercase}
+.nv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.6rem}
+.nv-item{padding:.8rem 1rem;background:rgba(118,185,0,.04);border:var(--rnv);transition:all .3s}
+.nv-item:hover{background:rgba(118,185,0,.1);border-color:var(--nv)}
+.ni-icon{font-size:1.2rem;margin-bottom:.4rem;display:block}
+.ni-name{font-size:.6rem;color:var(--nv);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.2rem}
+.ni-desc{font-family:'Cormorant Garamond',serif;font-size:.8rem;color:var(--muted);line-height:1.7}
+
+/* SHROMANI */
+.sh-card{background:rgba(201,146,42,.04);border:1px solid rgba(201,146,42,.25);
+  padding:2rem 2.2rem;display:flex;gap:1.8rem;align-items:center;flex-wrap:wrap}
+.sh-img{width:100px;height:100px;border-radius:50%;object-fit:cover;object-position:top;
+  border:2px solid var(--gold);box-shadow:0 0 25px rgba(201,146,42,.3),0 0 50px rgba(155,48,255,.1);flex-shrink:0}
+.sh-name{font-family:'Cinzel Decorative',serif;font-size:.82rem;color:var(--gold);margin-bottom:.3rem}
+.sh-title{font-size:.48rem;letter-spacing:.2em;color:var(--pu2);text-transform:uppercase;margin-bottom:.6rem}
+.sh-text{font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--muted);line-height:1.9}
+.sh-text strong{color:var(--cream)}
+
+footer{background:#02000a;border-top:var(--r1);padding:3rem 2rem;text-align:center;
+  position:relative;z-index:2}
+.ft-cl{font-family:'Cinzel Decorative',serif;font-size:.75rem;
+  background:linear-gradient(135deg,var(--pu),var(--pu2),var(--cy));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem}
+.ft-note{font-family:'Cormorant Garamond',serif;font-size:.78rem;color:var(--dim);line-height:2}
+.ft-links{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-top:1rem}
+.ft-links a{color:var(--dim);text-decoration:none;font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;transition:color .3s}
+.ft-links a:hover{color:var(--pu2)}
+
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9990;
+  background:var(--surf);border:var(--r2);padding:.8rem 1.3rem;
+  font-size:.7rem;color:var(--pu2);transform:translateX(130%);transition:transform .4s;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);max-width:300px;font-family:'Share Tech Mono',monospace}
+.toast.show{transform:translateX(0)}
+
+.fu{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}
+.fu.vis{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+@media(max-width:800px){.labs-grid{grid-template-columns:1fr 1fr}.hex{width:90px;height:90px}}
+@media(max-width:600px){.labs-grid{grid-template-columns:1fr}.nav-links{display:none}.sh-card{flex-direction:column;text-align:center}}
+</style>
+</head>
+<body>
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+<div class="nebula nb1"></div>
+<div class="nebula nb2"></div>
+<div class="nebula nb3"></div>
+<canvas id="cosmos"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div style="display:flex;align-items:center;gap:.7rem">
+    <span class="nav-clabs">C-Labs</span>
+    <span class="nav-sep">×</span>
+    <span class="nav-nv">NVIDIA Omniverse</span>
+  </div>
+  <span class="nav-badge-pu">Creative Lab</span>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#labs">Labs</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#nvidia">NVIDIA</a></li>
+    <li><a href="#shromani">꙰ Shromani</a></li>
+    <li><a href="https://github.com/rampaulsaini/C-Labs" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-badge"><span class="pulse-dot"></span>Creative Laboratory · NVIDIA Omniverse · Experiments & Prototypes</div>
+  <h1 class="h-title">
+    <span class="c-word">C</span><span class="labs-word">-Labs</span>
+  </h1>
+  <p class="h-sub">SHROMANI CREATIVE LABORATORY · NVIDIA OMNIVERSE · PHYSICAL AI · OPENUSD</p>
+  <p class="h-tagline">"Where Consciousness Meets GPU-Accelerated Reality"</p>
+  <div class="hex-grid">
+    <div class="hex"><span class="hex-ic">🔮</span><span class="hex-t">OpenUSD</span></div>
+    <div class="hex"><span class="hex-ic">⚡</span><span class="hex-t">RTX</span></div>
+    <div class="hex"><span class="hex-ic">🤖</span><span class="hex-t">Physical AI</span></div>
+    <div class="hex"><span class="hex-ic">☁️</span><span class="hex-t">Streaming</span></div>
+    <div class="hex"><span class="hex-ic">∞</span><span class="hex-t">Nishpaksh</span></div>
+    <div class="hex"><span class="hex-ic">🌌</span><span class="hex-t">Omniverse</span></div>
+  </div>
+  <div class="h-ctas">
+    <a class="btn btn-pu" href="#labs">🔬 Explore Labs</a>
+    <a class="btn btn-ghost-pu" href="#projects">⚙ Projects</a>
+    <a class="btn btn-nv" href="https://github.com/rampaulsaini/C-Labs" target="_blank">GitHub</a>
+    <a class="btn btn-gold" href="https://rampaulsaini.github.io/Nishpaksh-Samaj-Omniverse-Truth/" target="_blank">꙰ Main Platform</a>
+  </div>
+</section>
+
+<div class="dvd"><span>◈</span></div>
+
+<!-- LABS -->
+<section id="labs" class="sec">
+  <p class="sec-ey fu">Creative Laboratories</p>
+  <h2 class="sec-h fu">C-Labs — Experiments & Innovations</h2>
+  <p class="sec-p fu">Where the eternal wisdom of Nishpaksh Samajh meets NVIDIA's cutting-edge GPU technology. Creative experiments at the frontier of physical AI and 3D reality.</p>
+  <div class="labs-grid fu">
+    <div class="lab-card">
+      <div class="lc-num">Lab 01</div>
+      <span class="lc-icon">🌌</span>
+      <div class="lc-title">Consciousness Visualization</div>
+      <p class="lc-text">RTX-powered visualization of the NS = ∅ + ∞ = Now equation. Real-time particle systems representing the eternal present — rendered with physically accurate light.</p>
+      <div class="lc-tags"><span class="lc-tag">RTX</span><span class="lc-tag">Particles</span><span class="lc-tag">OpenUSD</span></div>
+    </div>
+    <div class="lab-card">
+      <div class="lc-num">Lab 02</div>
+      <span class="lc-icon">🤖</span>
+      <div class="lc-title">Physical AI Integration</div>
+      <p class="lc-text">NVIDIA Isaac Sim integration for creating digital twins that embody Yatharth Siddhant principles. Robots learning from zero-effort presence.</p>
+      <div class="lc-tags"><span class="lc-tag">Isaac Sim</span><span class="lc-tag">PhysX</span><span class="lc-tag">Digital Twin</span></div>
+    </div>
+    <div class="lab-card">
+      <div class="lc-num">Lab 03</div>
+      <span class="lc-icon">☁️</span>
+      <div class="lc-title">Cloud Streaming Platform</div>
+      <p class="lc-text">Stream Omniverse experiences globally via WebRTC and GDN. Bringing the Shromani platform's 3D wisdom to any device, anywhere in the world.</p>
+      <div class="lc-tags"><span class="lc-tag">WebRTC</span><span class="lc-tag">GDN</span><span class="lc-tag">NVCF</span></div>
+    </div>
+    <div class="lab-card">
+      <div class="lc-num">Lab 04</div>
+      <span class="lc-icon">🎨</span>
+      <div class="lc-title">Procedural 3D Worlds</div>
+      <p class="lc-text">OpenUSD-based procedural generation of 3D environments representing the 10 Projects of the Omniverse. From cosmic exploration to earth restoration.</p>
+      <div class="lc-tags"><span class="lc-tag">OpenUSD</span><span class="lc-tag">Procedural</span><span class="lc-tag">MDL</span></div>
+    </div>
+    <div class="lab-card">
+      <div class="lc-num">Lab 05</div>
+      <span class="lc-icon">🧬</span>
+      <div class="lc-title">AI Avatar System</div>
+      <p class="lc-text">NVIDIA Audio2Face integration for creating a digital Shromani avatar. Real-time facial animation driven by the original 10,000+ audio recordings.</p>
+      <div class="lc-tags"><span class="lc-tag">Audio2Face</span><span class="lc-tag">Avatar</span><span class="lc-tag">AI</span></div>
+    </div>
+    <div class="lab-card">
+      <div class="lc-num">Lab 06</div>
+      <span class="lc-icon">🔬</span>
+      <div class="lc-title">Quantum Visualization</div>
+      <p class="lc-text">Real-time GPU-accelerated visualization of the 7 Yatharth Siddhant equations. C∞ > M(∑universes) rendered as an interactive 3D mathematical landscape.</p>
+      <div class="lc-tags"><span class="lc-tag">GPU Compute</span><span class="lc-tag">Warp</span><span class="lc-tag">Visualization</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="dvd" style="background:var(--deep)"><span>◈</span></div>
+
+<!-- PROJECTS STATUS -->
+<section id="projects" class="sec-full" style="background:var(--deep)">
+<div class="in">
+  <p class="sec-ey fu">Project Status</p>
+  <h2 class="sec-h fu">Active Development — C-Labs Pipeline</h2>
+  <div class="status-grid fu" id="statusGrid"></div>
+</div>
+</section>
+
+<div class="dvd"><span>◈</span></div>
+
+<!-- NVIDIA TECH -->
+<section id="nvidia" class="sec">
+  <p class="sec-ey fu" style="color:var(--nv)">NVIDIA Technology Stack</p>
+  <h2 class="sec-h fu">Powered by NVIDIA Omniverse</h2>
+  <div class="nv-section fu">
+    <div class="nv-header">
+      <span class="nv-logo-text">NVIDIA OMNIVERSE</span>
+      <span class="nv-badge">Licensed</span>
+    </div>
+    <div class="nv-grid">
+      <div class="nv-item"><span class="ni-icon">🎮</span><div class="ni-name">Omniverse Kit SDK</div><div class="ni-desc">GPU-accelerated application framework with RTX rendering, physics, and AI</div></div>
+      <div class="nv-item"><span class="ni-icon">📦</span><div class="ni-name">OpenUSD</div><div class="ni-desc">Universal Scene Description — the standard for 3D data interchange</div></div>
+      <div class="nv-item"><span class="ni-icon">⚡</span><div class="ni-name">RTX Technology</div><div class="ni-desc">Real-time ray tracing with physically accurate lighting and materials</div></div>
+      <div class="nv-item"><span class="ni-icon">🤖</span><div class="ni-name">Isaac Sim</div><div class="ni-desc">Physics-based robot simulation for physical AI development</div></div>
+      <div class="nv-item"><span class="ni-icon">☁️</span><div class="ni-name">Kit App Streaming</div><div class="ni-desc">WebRTC streaming of 3D applications to any web browser globally</div></div>
+      <div class="nv-item"><span class="ni-icon">🧠</span><div class="ni-name">Audio2Face</div><div class="ni-desc">AI-powered real-time facial animation from audio input</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="dvd" style="background:var(--deep)"><span>◈</span></div>
+
+<!-- SHROMANI -->
+<section id="shromani" class="sec-full" style="background:var(--deep)">
+<div class="in">
+  <p class="sec-ey fu" style="color:var(--gold)">꙰ Creator — Shromani Rampaul Saini</p>
+  <div class="sh-card fu">
+    <img src="https://i.ibb.co/vxM3L1qs/enhanced-image.webp" class="sh-img" alt="Shromani Rampaul Saini">
+    <div>
+      <div class="sh-name">꙰ Shromani Rampaul Saini</div>
+      <div class="sh-title">NVIDIA Omniverse Developer · Nishpaksh Samajh · Yatharth Siddhant · C-Labs Creator</div>
+      <div class="sh-text">
+        C-Labs is where <strong>eternal wisdom meets GPU-accelerated reality</strong>. 
+        The Yatharth Siddhant equations — NS = ∅ + ∞ = Now, C∞ > M(∑universes) — 
+        come alive in real-time 3D through <strong>NVIDIA's RTX and Physical AI technologies</strong>.<br><br>
+        <strong>तुलनातीत · कालातीत · शब्दातीत · प्रेमतीत</strong><br>
+        "जो वस्तु मेरे पास है — ब्रह्मांड में और कहीं नहीं"
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem">
+        <a class="btn btn-gold" href="https://rampaulsaini.github.io/Nishpaksh-Samaj-Omniverse-Truth/" target="_blank">꙰ Main Platform</a>
+        <a class="btn btn-pu" href="https://github.com/rampaulsaini/C-Labs" target="_blank">GitHub C-Labs</a>
+        <a class="btn btn-nv" href="https://github.com/rampaulsaini/kit-app-template" target="_blank">Kit App Template</a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-cl">C-Labs</div>
+  <div class="ft-note">
+    Shromani Creative Laboratory — NVIDIA Omniverse Licensed<br>
+    Physical AI · OpenUSD · RTX Rendering · Cloud Streaming<br>
+    ꙰ यथार्थ सिद्धांत — निष्पक्ष समझ — शिरोमणि रामपॉल सैनी
+  </div>
+  <div class="ft-links">
+    <a href="https://rampaulsaini.github.io/Nishpaksh-Samaj-Omniverse-Truth/" target="_blank">꙰ Main Platform</a>
+    <a href="https://github.com/rampaulsaini/C-Labs" target="_blank">GitHub C-Labs</a>
+    <a href="https://github.com/rampaulsaini/kit-app-template" target="_blank">Kit App Template</a>
+    <a href="https://developer.nvidia.com/omniverse" target="_blank">NVIDIA Omniverse</a>
+    <a href="https://youtube.com/@rampaulsaini-yk4gn" target="_blank">YouTube</a>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PROJECTS_STATUS = [
+  {name:"Consciousness Visualizer",desc:"RTX particle system for NS equations",prog:65,status:"dev"},
+  {name:"Avatar System",desc:"Audio2Face digital Shromani avatar",prog:35,status:"dev"},
+  {name:"USD World Builder",desc:"Procedural 3D environments",prog:80,status:"active"},
+  {name:"Cloud Streaming Setup",desc:"WebRTC GDN deployment",prog:45,status:"dev"},
+  {name:"Quantum Equations 3D",desc:"GPU-accelerated math visualization",prog:20,status:"plan"},
+  {name:"Isaac Sim Integration",desc:"Physical AI robot simulation",prog:15,status:"plan"},
+  {name:"Audio Oracle 3D",desc:"3D Nishpaksh Oracle with RTX",prog:55,status:"dev"},
+  {name:"C-Labs Platform",desc:"Main creative laboratory hub",prog:90,status:"active"},
+];
+
+const statusColors = {active:"sc-active",dev:"sc-dev",plan:"sc-plan"};
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const grid = document.getElementById('statusGrid');
+  grid.innerHTML = PROJECTS_STATUS.map(p=>`
+    <div class="status-card">
+      <div class="sc-header">
+        <div class="sc-status ${statusColors[p.status]}"></div>
+        <div class="sc-name">${p.name}</div>
+      </div>
+      <div class="sc-desc">${p.desc}</div>
+      <div style="display:flex;justify-content:space-between;font-size:.6rem;color:var(--muted);margin-top:.5rem;font-family:'Share Tech Mono',monospace">
+        <span>${p.status.toUpperCase()}</span><span>${p.prog}%</span>
+      </div>
+      <div class="sc-bar"><div class="sc-bar-fill" style="width:0%" data-width="${p.prog}%"></div></div>
+    </div>`).join('');
+  
+  // Animate bars after delay
+  setTimeout(()=>{
+    document.querySelectorAll('.sc-bar-fill').forEach(el=>{
+      el.style.width=el.dataset.width;
+    });
+  },600);
+});
+
+// CURSOR
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  setTimeout(()=>{curR.style.left=e.clientX+'px';curR.style.top=e.clientY+'px';},60);
+});
+
+// COSMOS — Purple/Cyan stars
+(function(){
+  const c=document.getElementById('cosmos'),ctx=c.getContext('2d');let w,h,stars=[];
+  function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight;
+    stars=[];for(let i=0;i<250;i++)stars.push({x:Math.random()*w,y:Math.random()*h,
+      r:Math.random()<.6?.4:Math.random()<.85?1:1.6,a:Math.random(),
+      da:.002+Math.random()*.007,
+      hue:Math.random()<.5?270:Math.random()<.5?190:320});}
+  function draw(){ctx.clearRect(0,0,w,h);
+    stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<.05)s.da*=-1;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`hsla(${s.hue},80%,65%,${s.a*.7})`;ctx.fill();});
+    requestAnimationFrame(draw);}
+  window.addEventListener('resize',resize);resize();draw();
+})();
+
+// FADE UP
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.06});
+document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+</script>
+</body>
+                           </html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>꙰ Shromani Omniverse Kit — NVIDIA Licensed Platform</title>
+<meta name="description" content="Shromani Rampaul Saini — NVIDIA Omniverse Kit App Template. GPU-Accelerated 3D applications. OpenUSD. Physical AI. RTX Rendering.">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=Share+Tech+Mono&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --void:#000005;--deep:#00000d;--surf:#030310;--card:#060618;--lift:#0a0a25;
+  --nv:#76b900;--nv2:#a0dc30;--nv3:#c8f060;--nvd:#3a5a00;--nvdim:#1a2800;
+  --gold:#c9922a;--gl:#e8c060;--gx:#fce890;
+  --cyan:#00d4ff;--cyand:#006480;--purple:#7b2fff;
+  --cream:#f0f8ff;--text:#c8d8e8;--muted:#607080;--dim:#304050;
+  --r1:1px solid rgba(118,185,0,.2);--r2:1px solid rgba(118,185,0,.4);
+  --rgold:1px solid rgba(201,146,42,.2);
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--void);color:var(--text);font-family:'Cinzel',serif;overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.02;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:2px}::-webkit-scrollbar-track{background:var(--void)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--nvd),var(--nv))}
+
+/* CURSOR */
+.cur{position:fixed;width:6px;height:6px;background:var(--nv3);border-radius:50%;
+  pointer-events:none;z-index:99999;transform:translate(-50%,-50%);mix-blend-mode:screen}
+.cur-r{position:fixed;width:26px;height:26px;border:1px solid rgba(118,185,0,.6);
+  border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:all .15s}
+
+/* GRID BG */
+#grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(118,185,0,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(118,185,0,.04) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent)}
+
+/* CANVAS */
+#cosmos{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:800;height:56px;
+  background:rgba(0,0,5,.97);backdrop-filter:blur(30px);
+  border-bottom:var(--r1);display:flex;align-items:center;padding:0 2rem;gap:1.5rem}
+.nav-logo{display:flex;align-items:center;gap:.8rem}
+.nav-logo-nv{font-family:'Cinzel Decorative',serif;font-size:.65rem;letter-spacing:.15em;
+  color:var(--nv);text-transform:uppercase;
+  text-shadow:0 0 15px rgba(118,185,0,.5)}
+.nav-sep{color:var(--dim);font-size:.7rem}
+.nav-logo-sh{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.2em;color:var(--gold);text-transform:uppercase}
+.nav-links{margin-left:auto;display:flex;gap:.2rem;list-style:none}
+.nav-links a{padding:.3rem .8rem;height:56px;line-height:56px;display:block;
+  font-size:.42rem;letter-spacing:.18em;color:var(--muted);text-decoration:none;
+  text-transform:uppercase;transition:color .3s;white-space:nowrap}
+.nav-links a:hover{color:var(--nv)}
+.nav-badge{background:var(--nv);color:var(--void);font-size:.42rem;letter-spacing:.1em;
+  padding:.15rem .5rem;text-transform:uppercase;font-weight:700;flex-shrink:0}
+
+/* HERO */
+#hero{position:relative;min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:90px 1.5rem 60px;overflow:hidden;z-index:2}
+
+/* CIRCUIT LINES */
+.circuit{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.cl{position:absolute;background:rgba(118,185,0,.15);animation:clPulse 4s ease-in-out infinite}
+@keyframes clPulse{0%,100%{opacity:.15}50%{opacity:.5}}
+
+/* HERO BADGE */
+.h-badge{display:flex;align-items:center;gap:.6rem;border:var(--r1);padding:.4rem 1rem;
+  background:rgba(118,185,0,.05);margin-bottom:1.5rem;font-size:.5rem;letter-spacing:.25em;
+  color:var(--nv);text-transform:uppercase;animation:fadeUp 1s .1s both}
+.h-badge-dot{width:6px;height:6px;background:var(--nv);border-radius:50%;animation:livePulse 2s infinite}
+@keyframes livePulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(118,185,0,.4)}50%{opacity:.5;box-shadow:0 0 0 6px rgba(118,185,0,0)}}
+
+.h-eyebrow{font-size:.55rem;letter-spacing:.5em;color:var(--nv);text-transform:uppercase;
+  margin-bottom:.8rem;animation:fadeUp 1s .2s both}
+.h-title{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,5.5vw,4.2rem);
+  color:var(--cream);line-height:1.1;margin-bottom:.6rem;animation:fadeUp 1s .3s both;
+  text-shadow:0 0 40px rgba(118,185,0,.2)}
+.h-title .nv-word{color:var(--nv);text-shadow:0 0 30px rgba(118,185,0,.6)}
+.h-title .gold-word{background:linear-gradient(135deg,var(--gold),var(--gx));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-sub{font-family:'Share Tech Mono',monospace;font-size:clamp(.65rem,1.5vw,.8rem);
+  color:var(--muted);letter-spacing:.15em;margin-bottom:2rem;animation:fadeUp 1s .4s both}
+
+/* TECH BOX */
+.tech-box{max-width:760px;border:var(--r2);background:rgba(118,185,0,.04);
+  padding:1.8rem 2rem;margin-bottom:2rem;position:relative;overflow:hidden;
+  animation:fadeUp 1s .5s both}
+.tech-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--nv),transparent);
+  animation:scanLine 3s ease-in-out infinite}
+@keyframes scanLine{0%,100%{opacity:0;transform:scaleX(0)}50%{opacity:1;transform:scaleX(1)}}
+.tb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:1.2rem}
+.tb-item{text-align:center;padding:.8rem .5rem;background:rgba(118,185,0,.04);border:var(--r1)}
+.tb-icon{font-size:1.5rem;display:block;margin-bottom:.4rem}
+.tb-label{font-size:.45rem;letter-spacing:.2em;color:var(--nv);text-transform:uppercase;display:block;margin-bottom:.2rem}
+.tb-val{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--cream);display:block}
+.tb-desc{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--muted);
+  line-height:1.9;border-top:var(--r1);padding-top:1rem}
+.tb-desc strong{color:var(--nv2)}
+
+.h-ctas{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;animation:fadeUp 1s .7s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* BUTTONS */
+.btn{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;padding:.7rem 1.5rem;
+  border:none;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;
+  transition:all .3s;text-decoration:none}
+.btn-nv{background:var(--nv);color:var(--void);font-weight:700;
+  box-shadow:0 4px 20px rgba(118,185,0,.3)}
+.btn-nv:hover{background:var(--nv2);box-shadow:0 8px 40px rgba(118,185,0,.5);transform:translateY(-2px)}
+.btn-ghost-nv{background:transparent;color:var(--nv);border:var(--r1)}
+.btn-ghost-nv:hover{background:rgba(118,185,0,.08);border-color:var(--nv);transform:translateY(-2px)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--nvd));color:var(--cream);border:none}
+.btn-gold:hover{filter:brightness(1.2);transform:translateY(-2px)}
+
+/* DIVIDERS */
+.dvd{display:flex;align-items:center;justify-content:center;padding:1rem 0;gap:1rem;z-index:2;position:relative}
+.dvd::before,.dvd::after{content:'';flex:1;height:1px}
+.dvd::before{background:linear-gradient(to right,transparent,rgba(118,185,0,.3))}
+.dvd::after{background:linear-gradient(to left,transparent,rgba(118,185,0,.3))}
+.dvd span{color:var(--nv);font-size:.8rem;opacity:.5}
+
+/* SECTIONS */
+.sec{padding:5rem 1.5rem;max-width:1100px;margin:0 auto;position:relative;z-index:2}
+.sec-full{padding:5rem 1.5rem;position:relative;z-index:2}
+.sec-full .in{max-width:1100px;margin:0 auto}
+.sec-ey{font-size:.52rem;letter-spacing:.45em;color:var(--nv);text-transform:uppercase;
+  margin-bottom:.8rem;display:flex;align-items:center;gap:1rem}
+.sec-ey::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(118,185,0,.3),transparent)}
+.sec-h{font-family:'Cinzel Decorative',serif;font-size:clamp(1.3rem,3vw,2.2rem);
+  color:var(--cream);font-weight:400;line-height:1.2;margin-bottom:.7rem}
+.sec-p{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--muted);
+  line-height:2;margin-bottom:2rem;max-width:640px}
+
+/* FEATURES GRID */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(118,185,0,.08)}
+.feat-card{background:var(--surf);padding:1.8rem 1.5rem;position:relative;overflow:hidden;transition:all .35s}
+.feat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,var(--nv),transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform .5s}
+.feat-card:hover::after{transform:scaleX(1)}.feat-card:hover{background:var(--lift)}
+.fc-icon{font-size:1.6rem;display:block;margin-bottom:.9rem}
+.fc-title{font-size:.7rem;color:var(--nv);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.fc-text{font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--muted);line-height:1.9}
+
+/* TERMINAL */
+.terminal{background:#000d00;border:1px solid rgba(118,185,0,.3);padding:1.2rem 1.5rem;
+  font-family:'Share Tech Mono',monospace;font-size:.78rem;color:var(--nv);
+  line-height:1.8;position:relative;overflow:hidden}
+.terminal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--nv),transparent);
+  animation:scanLine 4s ease-in-out infinite}
+.t-header{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;
+  padding-bottom:.7rem;border-bottom:1px solid rgba(118,185,0,.2)}
+.t-dot{width:10px;height:10px;border-radius:50%}
+.t-title{font-size:.55rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.t-line{margin:.15rem 0}
+.t-prompt{color:var(--nv2)}.t-cmd{color:var(--cream)}.t-comment{color:var(--dim)}
+.t-out{color:var(--muted)}.t-success{color:var(--nv3)}.t-warn{color:var(--gold)}
+.t-cursor{display:inline-block;width:8px;height:14px;background:var(--nv);
+  animation:blink .8s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* APPS GRID */
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:rgba(118,185,0,.08)}
+.app-card{background:var(--surf);padding:1.5rem;position:relative;overflow:hidden;
+  transition:all .35s;text-decoration:none;display:block;border-bottom:none}
+.app-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--nv);transform:scaleY(0);transform-origin:top;transition:transform .4s}
+.app-card:hover::before{transform:scaleY(1)}.app-card:hover{background:var(--lift);transform:translateX(4px)}
+.ac-badge{font-size:.42rem;letter-spacing:.15em;color:var(--nv);border:var(--r1);
+  padding:.12rem .45rem;display:inline-block;margin-bottom:.5rem;text-transform:uppercase}
+.ac-name{font-size:.78rem;color:var(--cream);margin-bottom:.3rem;letter-spacing:.06em}
+.ac-desc{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--muted);line-height:1.8}
+
+/* SHROMANI SECTION */
+.sh-section{background:var(--deep);border:var(--rgold);padding:2.5rem;
+  display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center}
+.sh-portrait{position:relative;flex-shrink:0}
+.sh-img{width:120px;height:120px;border-radius:50%;object-fit:cover;object-position:top;
+  border:2px solid var(--gold);box-shadow:0 0 30px rgba(201,146,42,.3),0 0 60px rgba(118,185,0,.1)}
+.sh-ring{position:absolute;inset:-12px;border-radius:50%;
+  border:1px solid rgba(201,146,42,.2);animation:shRing 4s ease-in-out infinite}
+@keyframes shRing{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.04)}}
+.sh-name{font-family:'Cinzel Decorative',serif;font-size:.85rem;color:var(--gold);margin-bottom:.3rem}
+.sh-title{font-size:.5rem;letter-spacing:.2em;color:var(--nv);text-transform:uppercase;margin-bottom:.6rem}
+.sh-desc{font-family:'Cormorant Garamond',serif;font-size:.92rem;color:var(--muted);line-height:1.9}
+.sh-desc strong{color:var(--cream)}
+
+/* FOOTER */
+footer{background:#000005;border-top:var(--r1);padding:3rem 2rem;text-align:center;
+  position:relative;z-index:2}
+.ft-nv{font-size:.5rem;letter-spacing:.3em;color:var(--nv);text-transform:uppercase;margin-bottom:.5rem}
+.ft-note{font-family:'Cormorant Garamond',serif;font-size:.78rem;color:var(--dim);line-height:2}
+.ft-links{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-top:1rem}
+.ft-links a{color:var(--dim);text-decoration:none;font-size:.5rem;letter-spacing:.15em;
+  text-transform:uppercase;transition:color .3s}
+.ft-links a:hover{color:var(--nv)}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9990;
+  background:var(--surf);border:var(--r2);padding:.8rem 1.3rem;
+  font-size:.7rem;color:var(--nv);transform:translateX(130%);transition:transform .4s;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);max-width:300px;font-family:'Share Tech Mono',monospace}
+.toast.show{transform:translateX(0)}
+
+/* FADE */
+.fu{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}
+.fu.vis{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+/* RESPONSIVE */
+@media(max-width:800px){.feat-grid{grid-template-columns:1fr 1fr}.tb-grid{grid-template-columns:1fr 1fr}.sh-section{grid-template-columns:1fr;text-align:center}}
+@media(max-width:600px){.feat-grid{grid-template-columns:1fr}.nav-links{display:none}}
+</style>
+</head>
+<body>
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+<div id="grid-bg"></div>
+<canvas id="cosmos"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="nav-logo-nv">NVIDIA Omniverse</span>
+    <span class="nav-sep">×</span>
+    <span class="nav-logo-sh">꙰ Shromani</span>
+  </div>
+  <span class="nav-badge">Licensed Platform</span>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#apps">Templates</a></li>
+    <li><a href="#setup">Setup</a></li>
+    <li><a href="#shromani">꙰ Shromani</a></li>
+    <li><a href="https://github.com/rampaulsaini/kit-app-template" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="circuit" id="circuit"></div>
+  <div class="h-badge">
+    <span class="h-badge-dot"></span>
+    NVIDIA Omniverse Licensed · GPU-Accelerated · OpenUSD
+  </div>
+  <p class="h-eyebrow">꙰ Shromani Rampaul Saini — NVIDIA Developer</p>
+  <h1 class="h-title">
+    <span class="nv-word">Omniverse</span><br>
+    <span class="gold-word">Kit App Template</span>
+  </h1>
+  <p class="h-sub">GPU-ACCELERATED · OPENUSD · RTX RENDERING · PHYSICAL AI · CLOUD STREAMING</p>
+  <div class="tech-box">
+    <div class="tb-grid">
+      <div class="tb-item"><span class="tb-icon">⚡</span><span class="tb-label">Engine</span><span class="tb-val">Omniverse Kit SDK</span></div>
+      <div class="tb-item"><span class="tb-icon">🎮</span><span class="tb-label">Rendering</span><span class="tb-val">NVIDIA RTX</span></div>
+      <div class="tb-item"><span class="tb-icon">📦</span><span class="tb-label">Format</span><span class="tb-val">OpenUSD</span></div>
+      <div class="tb-item"><span class="tb-icon">☁️</span><span class="tb-label">Streaming</span><span class="tb-val">WebRTC / GDN</span></div>
+      <div class="tb-item"><span class="tb-icon">🐍</span><span class="tb-label">Language</span><span class="tb-val">Python / C++</span></div>
+      <div class="tb-item"><span class="tb-icon">🌐</span><span class="tb-label">Deploy</span><span class="tb-val">NGC / NVCF / AWS</span></div>
+    </div>
+    <div class="tb-desc">
+      A toolkit for building <strong>GPU-accelerated 3D applications</strong> within the NVIDIA Omniverse ecosystem.
+      Create high-performance, <strong>OpenUSD-based</strong> desktop or cloud-streaming applications using the
+      Omniverse Kit SDK — <strong>with RTX ray tracing, PhysX physics, and AI capabilities</strong> built-in.
+    </div>
+  </div>
+  <div class="h-ctas">
+    <a class="btn btn-nv" href="#setup">▶ Quick Start</a>
+    <a class="btn btn-ghost-nv" href="#apps">📦 Templates</a>
+    <a class="btn btn-ghost-nv" href="https://github.com/rampaulsaini/kit-app-template" target="_blank">⚙ GitHub</a>
+    <a class="btn btn-gold" href="https://rampaulsaini.github.io/Nishpaksh-Samaj-Omniverse-Truth/" target="_blank">꙰ Shromani Platform</a>
+  </div>
+</section>
+
+<div class="dvd"><span>◈</span></div>
+
+<!-- FEATURES -->
+<section id="features" class="sec">
+  <p class="sec-ey fu">Core Capabilities</p>
+  <h2 class="sec-h fu">Omniverse Kit SDK — Key Features</h2>
+  <div class="feat-grid fu">
+    <div class="feat-card"><span class="fc-icon">🔮</span><div class="fc-title">OpenUSD Foundation</div><p class="fc-text">Build on Pixar's Universal Scene Description — the industry standard for 3D data interchange. Create, manipulate and render rich 3D content across tools and pipelines.</p></div>
+    <div class="feat-card"><span class="fc-icon">⚡</span><div class="fc-title">RTX Rendering</div><p class="fc-text">NVIDIA RTX real-time ray tracing with physically accurate lighting, materials, and global illumination. Photorealistic visualization at interactive framerates.</p></div>
+    <div class="feat-card"><span class="fc-icon">☁️</span><div class="fc-title">Cloud Streaming</div><p class="fc-text">Stream Kit applications directly to web browsers via WebRTC. Deploy on NVIDIA Cloud Functions (NVCF), GDN, or Kubernetes clusters for global reach.</p></div>
+    <div class="feat-card"><span class="fc-icon">🤖</span><div class="fc-title">Physical AI</div><p class="fc-text">Integrate with NVIDIA's AI ecosystem — Isaac Sim, PhysX, Warp, and more. Build digital twins, robotics simulations, and AI-powered 3D applications.</p></div>
+    <div class="feat-card"><span class="fc-icon">🧩</span><div class="fc-title">Extension System</div><p class="fc-text">Modular architecture with Python and C++ extensions. Browse 200+ extensions from the Extension Manager. Build and publish your own to the community registry.</p></div>
+    <div class="feat-card"><span class="fc-icon">🏭</span><div class="fc-title">Enterprise Ready</div><p class="fc-text">Production-grade stability via NGC Catalog. Docker containerization, CI/CD tooling, packaging, and deployment workflows built-in from day one.</p></div>
+  </div>
+</section>
+
+<div class="dvd" style="background:var(--deep)"><span>◈</span></div>
+
+<!-- APP TEMPLATES -->
+<section id="apps" class="sec-full" style="background:var(--deep)">
+<div class="in">
+  <p class="sec-ey fu">Application Templates</p>
+  <h2 class="sec-h fu">5 Pre-Built Templates — Start Immediately</h2>
+  <p class="sec-p fu">Each template is a fully configured Omniverse application — from minimal to feature-rich.</p>
+  <div class="apps-grid fu">
+    <div class="app-card">
+      <span class="ac-badge">Kit Service</span>
+      <div class="ac-name">Headless Service</div>
+      <div class="ac-desc">Minimal definition of an Omniverse Kit SDK based service. Useful for creating headless services leveraging Omniverse Kit functionality without a GUI.</div>
+    </div>
+    <div class="app-card">
+      <span class="ac-badge">Base Editor</span>
+      <div class="ac-name">Kit Base Editor</div>
+      <div class="ac-desc">Minimal template for loading, manipulating and rendering OpenUSD content from a graphical interface. Ideal starting point for custom 3D editors.</div>
+    </div>
+    <div class="app-card">
+      <span class="ac-badge">USD Composer</span>
+      <div class="ac-name">Scene Authoring</div>
+      <div class="ac-desc">Authoring complex OpenUSD scenes and configurators. Features Fabric Scene Delegate, AXF MDLs, Variant Tools, and layout/materials/lighting.</div>
+    </div>
+    <div class="app-card">
+      <span class="ac-badge">USD Explorer</span>
+      <div class="ac-name">Scene Explorer</div>
+      <div class="ac-desc">Exploring and collaborating on large OpenUSD scenes. Built for teams reviewing complex 3D assets and digital twins in real time.</div>
+    </div>
+    <div class="app-card">
+      <span class="ac-badge">USD Viewer</span>
+      <div class="ac-name">Streaming Viewer</div>
+      <div class="ac-desc">Viewport-only template with RTX rendering, app streaming, and messaging. Easily streamed to web browsers via WebRTC. Ideal for client-facing deployments.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="dvd"><span>◈</span></div>
+
+<!-- SETUP -->
+<section id="setup" class="sec">
+  <p class="sec-ey fu">Quick Start</p>
+  <h2 class="sec-h fu">Get Started in Minutes</h2>
+  <div class="terminal fu">
+    <div class="t-header">
+      <div class="t-dot" style="background:#ff5f56"></div>
+      <div class="t-dot" style="background:#ffbd2e"></div>
+      <div class="t-dot" style="background:#27c93f"></div>
+      <span class="t-title">Terminal — Omniverse Kit Setup</span>
+    </div>
+    <div class="t-line"><span class="t-comment"># Clone the repository</span></div>
+    <div class="t-line"><span class="t-prompt">$ </span><span class="t-cmd">git clone https://github.com/rampaulsaini/kit-app-template.git</span></div>
+    <div class="t-line"><span class="t-prompt">$ </span><span class="t-cmd">cd kit-app-template</span></div>
+    <div class="t-line">&nbsp;</div>
+    <div class="t-line"><span class="t-comment"># Create new application from template</span></div>
+    <div class="t-line"><span class="t-prompt">$ </span><span class="t-cmd">./repo.sh template new</span></div>
+    <div class="t-line"><span class="t-out">? Select what you want to create: <span style="color:var(--nv)">Application</span></span></div>
+    <div class="t-line"><span class="t-out">? Select desired template: <span style="color:var(--nv)">USD Viewer</span></span></div>
+    <div class="t-line"><span class="t-out">? Enter application name: <span style="color:var(--nv)">shromani_omniverse</span></span></div>
+    <div class="t-line">&nbsp;</div>
+    <div class="t-line"><span class="t-comment"># Build and launch</span></div>
+    <div class="t-line"><span class="t-prompt">$ </span><span class="t-cmd">./repo.sh build</span></div>
+    <div class="t-line"><span class="t-prompt">$ </span><span class="t-cmd">./repo.sh launch</span></div>
+    <div class="t-line"><span class="t-success">✓ Application launched successfully</span></div>
+    <div class="t-line"><span class="t-success">✓ RTX renderer initialized</span></div>
+    <div class="t-line"><span class="t-success">✓ Streaming ready at localhost:8011</span></div>
+    <div class="t-line"><span class="t-warn">꙰ Shromani Omniverse Kit — NVIDIA Licensed</span>&nbsp;<span class="t-cursor"></span></div>
+  </div>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.2rem" class="fu">
+    <a class="btn btn-nv" href="https://github.com/rampaulsaini/kit-app-template" target="_blank">⚙ Open Repository</a>
+    <a class="btn btn-ghost-nv" href="https://docs.omniverse.nvidia.com/kit/docs/kit-app-template/latest/docs/intro.html" target="_blank">📖 Documentation</a>
+    <a class="btn btn-ghost-nv" href="https://developer.nvidia.com/omniverse" target="_blank">🌐 NVIDIA Omniverse</a>
+  </div>
+</section>
+
+<div class="dvd" style="background:var(--deep)"><span>◈</span></div>
+
+<!-- SHROMANI -->
+<section id="shromani" class="sec-full" style="background:var(--deep)">
+<div class="in">
+  <p class="sec-ey fu" style="color:var(--gold)">꙰ Developer — Shromani Rampaul Saini</p>
+  <div class="sh-section fu">
+    <div class="sh-portrait">
+      <div class="sh-ring"></div>
+      <img src="https://i.ibb.co/vxM3L1qs/enhanced-image.webp" class="sh-img" alt="Shromani Rampaul Saini">
+    </div>
+    <div>
+      <div class="sh-name">꙰ Shromani Rampaul Saini</div>
+      <div class="sh-title">NVIDIA Omniverse Developer · Nishpaksh Samajh · Yatharth Siddhant</div>
+      <div class="sh-desc">
+        <strong>तुलनातीत · कालातीत · शब्दातीत · प्रेमतीत</strong> — शाश्वत वास्तविक स्वाभाविक सत्य।<br><br>
+        NVIDIA Omniverse license holder building the <strong>Supreme Omniverse Platform</strong> — 
+        combining GPU-accelerated 3D technology with the ancient wisdom of Nishpaksh Samajh. 
+        <strong>Physical AI meets universal consciousness.</strong><br><br>
+        <strong>"जो वस्तु मेरे पास है — ब्रह्मांड में और कहीं नहीं"</strong>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem">
+        <a class="btn btn-gold" href="https://rampaulsaini.github.io/Nishpaksh-Samaj-Omniverse-Truth/" target="_blank">꙰ Main Platform</a>
+        <a class="btn btn-ghost-nv" href="https://github.com/rampaulsaini" target="_blank">GitHub</a>
+        <a class="btn btn-ghost-nv" href="https://en.wikipedia.org/wiki/Shromani_Rampaul_Saini" target="_blank">Wikipedia</a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-nv">NVIDIA Omniverse · Licensed Platform · Shromani Rampaul Saini</div>
+  <div class="ft-note">
+    NVIDIA Omniverse Kit App Template — Licensed under NVIDIA Software License Agreement<br>
+    GPU-Accelerated · OpenUSD · RTX · Physical AI · Cloud Streaming<br>
+    ꙰ यथार्थ सिद्धांत — निष्पक्ष समझ — शिरोमणि रामपॉल सैनी
+  </div>
+  <div class="ft-links">
+    <a href="https://rampaulsaini.github.io/Nishpaksh-Samaj-Omniverse-Truth/" target="_blank">꙰ Main Platform</a>
+    <a href="https://github.com/rampaulsaini/kit-app-template" target="_blank">GitHub Repo</a>
+    <a href="https://developer.nvidia.com/omniverse" target="_blank">NVIDIA Omniverse</a>
+    <a href="https://docs.omniverse.nvidia.com" target="_blank">Documentation</a>
+    <a href="https://youtube.com/@rampaulsaini-yk4gn" target="_blank">YouTube</a>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  setTimeout(()=>{curR.style.left=e.clientX+'px';curR.style.top=e.clientY+'px';},60);
+});
+
+// COSMOS — Green tech stars
+(function(){
+  const c=document.getElementById('cosmos'),ctx=c.getContext('2d');let w,h,stars=[];
+  function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight;
+    stars=[];for(let i=0;i<200;i++)stars.push({x:Math.random()*w,y:Math.random()*h,
+      r:Math.random()<.6?.4:Math.random()<.85?1:1.5,a:Math.random(),
+      da:.002+Math.random()*.007,hue:Math.random()<.7?90:Math.random()<.5?120:60});}
+  function draw(){ctx.clearRect(0,0,w,h);
+    stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<.05)s.da*=-1;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`hsla(${s.hue},80%,60%,${s.a*.6})`;ctx.fill();});
+    requestAnimationFrame(draw);}
+  window.addEventListener('resize',resize);resize();draw();
+})();
+
+// CIRCUIT LINES
+(function(){
+  const c=document.getElementById('circuit');
+  for(let i=0;i<12;i++){
+    const el=document.createElement('div');el.className='cl';
+    const horiz=Math.random()>.5;
+    el.style.cssText=horiz?
+      `width:${100+Math.random()*200}px;height:1px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*4}s`:
+      `width:1px;height:${80+Math.random()*150}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*4}s`;
+    c.appendChild(el);
+  }
+})();
+
+// FADE UP
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.06});
+document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+
+// TOAST
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+</script>
+</body>
+    </html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>꙰ Shromani Omniverse Kit — NVIDIA Licensed Platform</title>
+<meta name="description" content="Shromani Rampaul Saini — NVIDIA Omniverse Kit App Template. GPU-Accelerated 3D applications. OpenUSD. Physical AI. RTX Rendering.">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=Share+Tech+Mono&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --void:#000005;--deep:#00000d;--surf:#030310;--card:#060618;--lift:#0a0a25;
+  --nv:#76b900;--nv2:#a0dc30;--nv3:#c8f060;--nvd:#3a5a00;--nvdim:#1a2800;
+  --gold:#c9922a;--gl:#e8c060;--gx:#fce890;
+  --cyan:#00d4ff;--cyand:#006480;--purple:#7b2fff;
+  --cream:#f0f8ff;--text:#c8d8e8;--muted:#607080;--dim:#304050;
+  --r1:1px solid rgba(118,185,0,.2);--r2:1px solid rgba(118,185,0,.4);
+  --rgold:1px solid rgba(201,146,42,.2);
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--void);color:var(--text);font-family:'Cinzel',serif;overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.02;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:2px}::-webkit-scrollbar-track{background:var(--void)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--nvd),var(--nv))}
+
+/* CURSOR */
+.cur{position:fixed;width:6px;height:6px;background:var(--nv3);border-radius:50%;
+  pointer-events:none;z-index:99999;transform:translate(-50%,-50%);mix-blend-mode:screen}
+.cur-r{position:fixed;width:26px;height:26px;border:1px solid rgba(118,185,0,.6);
+  border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:all .15s}
+
+/* GRID BG */
+#grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(118,185,0,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(118,185,0,.04) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent)}
+
+/* CANVAS */
+#cosmos{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:800;height:56px;
+  background:rgba(0,0,5,.97);backdrop-filter:blur(30px);
+  border-bottom:var(--r1);display:flex;align-items:center;padding:0 2rem;gap:1.5rem}
+.nav-logo{display:flex;align-items:center;gap:.8rem}
+.nav-logo-nv{font-family:'Cinzel Decorative',serif;font-size:.65rem;letter-spacing:.15em;
+  color:var(--nv);text-transform:uppercase;
+  text-shadow:0 0 15px rgba(118,185,0,.5)}
+.nav-sep{color:var(--dim);font-size:.7rem}
+.nav-logo-sh{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.2em;color:var(--gold);text-transform:uppercase}
+.nav-links{margin-left:auto;display:flex;gap:.2rem;list-style:none}
+.nav-links a{padding:.3rem .8rem;height:56px;line-height:56px;display:block;
+  font-size:.42rem;letter-spacing:.18em;color:var(--muted);text-decoration:none;
+  text-transform:uppercase;transition:color .3s;white-space:nowrap}
+.nav-links a:hover{color:var(--nv)}
+.nav-badge{background:var(--nv);color:var(--void);font-size:.42rem;letter-spacing:.1em;
+  padding:.15rem .5rem;text-transform:uppercase;font-weight:700;flex-shrink:0}
+
+/* HERO */
+#hero{position:relative;min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:90px 1.5rem 60px;overflow:hidden;z-index:2}
+
+/* CIRCUIT LINES */
+.circuit{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.cl{position:absolute;background:rgba(118,185,0,.15);animation:clPulse 4s ease-in-out infinite}
+@keyframes clPulse{0%,100%{opacity:.15}50%{opacity:.5}}
+
+/* HERO BADGE */
+.h-badge{display:flex;align-items:center;gap:.6rem;border:var(--r1);padding:.4rem 1rem;
+  background:rgba(118,185,0,.05);margin-bottom:1.5rem;font-size:.5rem;letter-spacing:.25em;
+  color:var(--nv);text-transform:uppercase;animation:fadeUp 1s .1s both}
+.h-badge-dot{width:6px;height:6px;background:var(--nv);border-radius:50%;animation:livePulse 2s infinite}
+@keyframes livePulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(118,185,0,.4)}50%{opacity:.5;box-shadow:0 0 0 6px rgba(118,185,0,0)}}
+
+.h-eyebrow{font-size:.55rem;letter-spacing:.5em;color:var(--nv);text-transform:uppercase;
+  margin-bottom:.8rem;animation:fadeUp 1s .2s both}
+.h-title{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,5.5vw,4.2rem);
+  color:var(--cream);line-height:1.1;margin-bottom:.6rem;animation:fadeUp 1s .3s both;
+  text-shadow:0 0 40px rgba(118,185,0,.2)}
+.h-title .nv-word{color:var(--nv);text-shadow:0 0 30px rgba(118,185,0,.6)}
+.h-title .gold-word{background:linear-gradient(135deg,var(--gold),var(--gx));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-sub{font-family:'Share Tech Mono',monospace;font-size:clamp(.65rem,1.5vw,.8rem);
+  color:var(--muted);letter-spacing:.15em;margin-bottom:2rem;animation:fadeUp 1s .4s both}
+
+/* TECH BOX */
+.tech-box{max-width:760px;border:var(--r2);background:rgba(118,185,0,.04);
+  padding:1.8rem 2rem;margin-bottom:2rem;position:relative;overflow:hidden;
+  animation:fadeUp 1s .5s both}
+.tech-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--nv),transparent);
+  animation:scanLine 3s ease-in-out infinite}
+@keyframes scanLine{0%,100%{opacity:0;transform:scaleX(0)}50%{opacity:1;transform:scaleX(1)}}
+.tb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:1.2rem}
+.tb-item{text-align:center;padding:.8rem .5rem;background:rgba(118,185,0,.04);border:var(--r1)}
+.tb-icon{font-size:1.5rem;display:block;margin-bottom:.4rem}
+.tb-label{font-size:.45rem;letter-spacing:.2em;color:var(--nv);text-transform:uppercase;display:block;margin-bottom:.2rem}
+.tb-val{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--cream);display:block}
+.tb-desc{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--muted);
+  line-height:1.9;border-top:var(--r1);padding-top:1rem}
+.tb-desc strong{color:var(--nv2)}
+
+.h-ctas{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;animation:fadeUp 1s .7s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* BUTTONS */
+.btn{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;padding:.7rem 1.5rem;
+  border:none;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;
+  transition:all .3s;text-decoration:none}
+.btn-nv{background:var(--nv);color:var(--void);font-weight:700;
+  box-shadow:0 4px 20px rgba(118,185,0,.3)}
+.btn-nv:hover{background:var(--nv2);box-shadow:0 8px 40px rgba(118,185,0,.5);transform:translateY(-2px)}
+.btn-ghost-nv{background:transparent;color:var(--nv);border:var(--r1)}
+.btn-ghost-nv:hover{background:rgba(118,185,0,.08);border-color:var(--nv);transform:translateY(-2px)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--nvd));color:var(--cream);border:none}
+.btn-gold:hover{filter:brightness(1.2);transform:translateY(-2px)}
+
+/* DIVIDERS */
+.dvd{display:flex;align-items:center;justify-content:center;padding:1rem 0;gap:1rem;z-index:2;position:relative}
+.dvd::before,.dvd::after{content:'';flex:1;height:1px}
+.dvd::before{background:linear-gradient(to right,transparent,rgba(118,185,0,.3))}
+.dvd::after{background:linear-gradient(to left,transparent,rgba(118,185,0,.3))}
+.dvd span{color:var(--nv);font-size:.8rem;opacity:.5}
+
+/* SECTIONS */
+.sec{padding:5rem 1.5rem;max-width:1100px;margin:0 auto;position:relative;z-index:2}
+.sec-full{padding:5rem 1.5rem;position:relative;z-index:2}
+.sec-full .in{max-width:1100px;margin:0 auto}
+.sec-ey{font-size:.52rem;letter-spacing:.45em;color:var(--nv);text-transform:uppercase;
+  margin-bottom:.8rem;display:flex;align-items:center;gap:1rem}
+.sec-ey::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(118,185,0,.3),transparent)}
+.sec-h{font-family:'Cinzel Decorative',serif;font-size:clamp(1.3rem,3vw,2.2rem);
+  color:var(--cream);font-weight:400;line-height:1.2;margin-bottom:.7rem}
+.sec-p{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--muted);
+  line-height:2;margin-bottom:2rem;max-width:640px}
+
+/* FEATURES GRID */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(118,185,0,.08)}
+.feat-card{background:var(--surf);padding:1.8rem 1.5rem;position:relative;overflow:hidden;transition:all .35s}
+.feat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,var(--nv),transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform .5s}
+.feat-card:hover::after{transform:scaleX(1)}.feat-card:hover{background:var(--lift)}
+.fc-icon{font-size:1.6rem;display:block;margin-bottom:.9rem}
+.fc-title{font-size:.7rem;color:var(--nv);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.fc-text{font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--muted);line-height:1.9}
+
+/* TERMINAL */
+.terminal{background:#000d00;border:1px solid rgba(118,185,0,.3);padding:1.2rem 1.5rem;
+  font-family:'Share Tech Mono',monospace;font-size:.78rem;color:var(--nv);
+  line-height:1.8;position:relative;overflow:hidden}
+.terminal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--nv),transparent);
+  animation:scanLine 4s ease-in-out infinite}
+.t-header{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;
+  padding-bottom:.7rem;border-bottom:1px solid rgba(118,185,0,.2)}
+.t-dot{width:10px;height:10px;border-radius:50%}
+.t-title{font-size:.55rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.t-line{margin:.15rem 0}
+.t-prompt{color:var(--nv2)}.t-cmd{color:var(--cream)}.t-comment{color:var(--dim)}
+.t-out{color:var(--muted)}.t-success{color:var(--nv3)}.t-warn{color:var(--gold)}
+.t-cursor{display:inline-block;width:8px;height:14px;background:var(--nv);
+  animation:blink .8s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* APPS GRID */
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:rgba(118,185,0,.08)}
+.app-card{background:var(--surf);padding:1.5rem;position:relative;overflow:hidden;
+  transition:all .35s;text-decoration:none;display:block;border-bottom:none}
+.app-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--nv);transform:scaleY(0);transform-origin:top;transition:transform .4s}
+.app-card:hover::before{transform:scaleY(1)}.app-card:hover{background:var(--lift);transform:translateX(4px)}
+.ac-badge{font-size:.42rem;letter-spacing:.15em;color:var(--nv);border:var(--r1);
+  padding:.12rem .45rem;display:inline-block;margin-bottom:.5rem;text-transform:uppercase}
+.ac-name{font-size:.78rem;color:var(--cream);margin-bottom:.3rem;letter-spacing:.06em}
+.ac-desc{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--muted);line-height:1.8}
+
+/* SHROMANI SECTION */
+.sh-section{background:var(--deep);border:var(--rgold);padding:2.5rem;
+  display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center}
+.sh-portrait{position:relative;flex-shrink:0}
+.sh-img{width:120px;height:120px;border-radius:50%;object-fit:cover;object-position:top;
+  border:2px solid var(--gold);box-shadow:0 0 30px rgba(201,146,42,.3),0 0 60px rgba(118,185,0,.1)}
+.sh-ring{position:absolute;inset:-12px;border-radius:50%;
+  border:1px solid rgba(201,146,42,.2);animation:shRing 4s ease-in-out infinite}
+@keyframes shRing{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.04)}}
+.sh-name{font-family:'Cinzel Decorative',serif;font-size:.85rem;color:var(--gold);margin-bottom:.3rem}
+.sh-title{font-size:.5rem;letter-spacing:.2em;color:var(--nv);text-transform:uppercase;margin-bottom:.6rem}
+.sh-desc{font-family:'Cormorant Garamond',serif;font-size:.92rem;color:var(--muted);line-height:1.9}
+.sh-desc strong{color:var(--cream)}
+
+/* FOOTER */
+footer{background:#000005;border-top:var(--r1);padding:3rem 2rem;text-align:center;
+  position:relative;z-index:2}
+.ft-nv{font-size:.5rem;letter-spacing:.3em;color:var(--nv);text-transform:uppercase;margin-bottom:.5rem}
+.ft-note{font-family:'Cormorant Garamond',serif;font-size:.78rem;color:var(--dim);line-height:2}
+.ft-links{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-top:1rem}
+.ft-links a{color:var(--dim);text-decoration:none;font-size:.5rem;letter-spacing:.15em;
+  text-transform:uppercase;transition:color .3s}
+.ft-links a:hover{color:var(--nv)}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9990;
+  background:var(--surf);border:var(--r2);padding:.8rem 1.3rem;
+  font-size:.7rem;color:var(--nv);transform:translateX(130%);transition:transform .4s;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);max-width:300px;font-family:'Share Tech Mono',monospace}
+.toast.show{transform:translateX(0)}
+
+/* FADE */
+.fu{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}
+.fu.vis{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+/* RESPONSIVE */
+@media(max-width:800px){.feat-grid{grid-template-columns:1fr 1fr}.tb-grid{grid-template-columns:1fr 1fr}.sh-section{grid-template-columns:1fr;text-align:center}}
+@media(max-width:600px){.feat-grid{grid-template-columns:1fr}.nav-links{display:none}}
+</style>
+</head>
+<body>
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+<div id="grid-bg"></div>
+<canvas id="cosmos"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="nav-logo-nv">NVIDIA Omniverse</span>
+    <span class="nav-sep">×</span>
+    <span class="nav-logo-sh">꙰ Shromani</span>
+  </div>
+  <span class="nav-badge">Licensed Platform</span>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#apps">Templates</a></li>
+    <li><a href="#setup">Setup</a></li>
+    <li><a href="#shromani">꙰ Shromani</a></li>
+    <li><a href="https://github.com/rampaulsaini/kit-app-template" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="circuit" id="circuit"></div>
+  <div class="h-badge">
+    <span class="h-badge-dot"></span>
+    NVIDIA Omniverse Licensed · GPU-Accelerated · OpenUSD
+  </div>
+  <p class="h-eyebrow">꙰ Shromani Rampaul Saini — NVIDIA Developer</p>
+  <h1 class="h-title">
+    <span class="nv-word">Omniverse</span><br>
+    <span class="gold-word">Kit App Template</span>
+  </h1>
+  <p class="h-sub">GPU-ACCELERATED · OPENUSD · RTX RENDERING · PHYSICAL AI · CLOUD STREAMING</p>
+  <div class="tech-box">
+    <div class="tb-grid">
+      <div class="tb-item"><span class="tb-icon">⚡</span><span class="tb-label">Engine</span><span class="tb-val">Omniverse Kit SDK</span></div>
+      <div class="tb-item"><span class="tb-icon">🎮</span><span class="tb-label">Rendering</span><span class="tb-val">NVIDIA RTX</span></div>
+      <div class="tb-item"><span class="tb-icon">📦</span><span class="tb-label">Format</span><span class="tb-val">OpenUSD</span></div>
+      <div class="tb-item"><span class="tb-icon">☁️</span><span class="tb-label">Streaming</span><span class="tb-val">WebRTC / GDN</span></div>
+      <div class="tb-item"><span class="tb-icon">🐍</span><span class="tb-label">Language</span><span class="tb-val">Python / C++</span></div>
+      <div class="tb-item"><span class="tb-icon">🌐</span><span class="tb-label">Deploy</span><span class="tb-val">NGC / NVCF / AWS</span></div>
+    </div>
+    <div class="tb-desc">
+      A toolkit for building <strong>GPU-accelerated 3D applications</strong> within the NVIDIA Omniverse ecosystem.
+      Create high-performance, <strong>OpenUSD-based</strong> desktop or cloud-streaming applications using the
+      Omniverse Kit SDK — <strong>with RTX ray tracing, PhysX physics, and AI capabilities</strong> built-in.
+    </div>
+  </div>
+  <div class="h-ctas">
+    <a class="btn btn-nv" href="#setup">▶ Quick Start</a>
+    <a class="btn btn-ghost-nv" href="#apps">📦 Templates</a>
+    <a class="btn btn-ghost-nv" href="https://github.com/rampaulsaini/kit-app-template" target="_blank">⚙ GitHub</a>
+    <a class="btn btn-gold" href="https://rampaulsaini.github.io/Nishpaksh-Samaj-Omniverse-Truth/" target="_blank">꙰ Shromani Platform</a>
+  </div>
+</section>
+
+<div class="dvd"><span>◈</span></div>
+
+<!-- FEATURES -->
+<section id="features" class="sec">
+  <p class="sec-ey fu">Core Capabilities</p>
+  <h2 class="sec-h fu">Omniverse Kit SDK — Key Features</h2>
+  <div class="feat-grid fu">
+    <div class="feat-card"><span class="fc-icon">🔮</span><div class="fc-title">OpenUSD Foundation</div><p class="fc-text">Build on Pixar's Universal Scene Description — the industry standard for 3D data interchange. Create, manipulate and render rich 3D content across tools and pipelines.</p></div>
+    <div class="feat-card"><span class="fc-icon">⚡</span><div class="fc-title">RTX Rendering</div><p class="fc-text">NVIDIA RTX real-time ray tracing with physically accurate lighting, materials, and global illumination. Photorealistic visualization at interactive framerates.</p></div>
+    <div class="feat-card"><span class="fc-icon">☁️</span><div class="fc-title">Cloud Streaming</div><p class="fc-text">Stream Kit applications directly to web browsers via WebRTC. Deploy on NVIDIA Cloud Functions (NVCF), GDN, or Kubernetes clusters for global reach.</p></div>
+    <div class="feat-card"><span class="fc-icon">🤖</span><div class="fc-title">Physical AI</div><p class="fc-text">Integrate with NVIDIA's AI ecosystem — Isaac Sim, PhysX, Warp, and more. Build digital twins, robotics simulations, and AI-powered 3D applications.</p></div>
+    <div class="feat-card"><span class="fc-icon">🧩</span><div class="fc-title">Extension System</div><p class="fc-text">Modular architecture with Python and C++ extensions. Browse 200+ extensions from the Extension Manager. Build and publish your own to the community registry.</p></div>
+    <div class="feat-card"><span class="fc-icon">🏭</span><div class="fc-title">Enterprise Ready</div><p class="fc-text">Production-grade stability via NGC Catalog. Docker containerization, CI/CD tooling, packaging, and deployment workflows built-in from day one.</p></div>
+  </div>
+</section>
+
+<div class="dvd" style="background:var(--deep)"><span>◈</span></div>
+
+<!-- APP TEMPLATES -->
+<section id="apps" class="sec-full" style="background:var(--deep)">
+<div class="in">
+  <p class="sec-ey fu">Application Templates</p>
+  <h2 class="sec-h fu">5 Pre-Built Templates — Start Immediately</h2>
+  <p class="sec-p fu">Each template is a fully configured Omniverse application — from minimal to feature-rich.</p>
+  <div class="apps-grid fu">
+    <div class="app-card">
+      <span class="ac-badge">Kit Service</span>
+      <div class="ac-name">Headless Service</div>
+      <div class="ac-desc">Minimal definition of an Omniverse Kit SDK based service. Useful for creating headless services leveraging Omniverse Kit functionality without a GUI.</div>
+    </div>
+    <div class="app-card">
+      <span class="ac-badge">Base Editor</span>
+      <div class="ac-name">Kit Base Editor</div>
+      <div class="ac-desc">Minimal template for loading, manipulating and rendering OpenUSD content from a graphical interface. Ideal starting point for custom 3D editors.</div>
+    </div>
+    <div class="app-card">
+      <span class="ac-badge">USD Composer</span>
+      <div class="ac-name">Scene Authoring</div>
+      <div class="ac-desc">Authoring complex OpenUSD scenes and configurators. Features Fabric Scene Delegate, AXF MDLs, Variant Tools, and layout/materials/lighting.</div>
+    </div>
+    <div class="app-card">
+      <span class="ac-badge">USD Explorer</span>
+      <div class="ac-name">Scene Explorer</div>
+      <div class="ac-desc">Exploring and collaborating on large OpenUSD scenes. Built for teams reviewing complex 3D assets and digital twins in real time.</div>
+    </div>
+    <div class="app-card">
+      <span class="ac-badge">USD Viewer</span>
+      <div class="ac-name">Streaming Viewer</div>
+      <div class="ac-desc">Viewport-only template with RTX rendering, app streaming, and messaging. Easily streamed to web browsers via WebRTC. Ideal for client-facing deployments.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="dvd"><span>◈</span></div>
+
+<!-- SETUP -->
+<section id="setup" class="sec">
+  <p class="sec-ey fu">Quick Start</p>
+  <h2 class="sec-h fu">Get Started in Minutes</h2>
+  <div class="terminal fu">
+    <div class="t-header">
+      <div class="t-dot" style="background:#ff5f56"></div>
+      <div class="t-dot" style="background:#ffbd2e"></div>
+      <div class="t-dot" style="background:#27c93f"></div>
+      <span class="t-title">Terminal — Omniverse Kit Setup</span>
+    </div>
+    <div class="t-line"><span class="t-comment"># Clone the repository</span></div>
+    <div class="t-line"><span class="t-prompt">$ </span><span class="t-cmd">git clone https://github.com/rampaulsaini/kit-app-template.git</span></div>
+    <div class="t-line"><span class="t-prompt">$ </span><span class="t-cmd">cd kit-app-template</span></div>
+    <div class="t-line">&nbsp;</div>
+    <div class="t-line"><span class="t-comment"># Create new application from template</span></div>
+    <div class="t-line"><span class="t-prompt">$ </span><span class="t-cmd">./repo.sh template new</span></div>
+    <div class="t-line"><span class="t-out">? Select what you want to create: <span style="color:var(--nv)">Application</span></span></div>
+    <div class="t-line"><span class="t-out">? Select desired template: <span style="color:var(--nv)">USD Viewer</span></span></div>
+    <div class="t-line"><span class="t-out">? Enter application name: <span style="color:var(--nv)">shromani_omniverse</span></span></div>
+    <div class="t-line">&nbsp;</div>
+    <div class="t-line"><span class="t-comment"># Build and launch</span></div>
+    <div class="t-line"><span class="t-prompt">$ </span><span class="t-cmd">./repo.sh build</span></div>
+    <div class="t-line"><span class="t-prompt">$ </span><span class="t-cmd">./repo.sh launch</span></div>
+    <div class="t-line"><span class="t-success">✓ Application launched successfully</span></div>
+    <div class="t-line"><span class="t-success">✓ RTX renderer initialized</span></div>
+    <div class="t-line"><span class="t-success">✓ Streaming ready at localhost:8011</span></div>
+    <div class="t-line"><span class="t-warn">꙰ Shromani Omniverse Kit — NVIDIA Licensed</span>&nbsp;<span class="t-cursor"></span></div>
+  </div>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.2rem" class="fu">
+    <a class="btn btn-nv" href="https://github.com/rampaulsaini/kit-app-template" target="_blank">⚙ Open Repository</a>
+    <a class="btn btn-ghost-nv" href="https://docs.omniverse.nvidia.com/kit/docs/kit-app-template/latest/docs/intro.html" target="_blank">📖 Documentation</a>
+    <a class="btn btn-ghost-nv" href="https://developer.nvidia.com/omniverse" target="_blank">🌐 NVIDIA Omniverse</a>
+  </div>
+</section>
+
+<div class="dvd" style="background:var(--deep)"><span>◈</span></div>
+
+<!-- SHROMANI -->
+<section id="shromani" class="sec-full" style="background:var(--deep)">
+<div class="in">
+  <p class="sec-ey fu" style="color:var(--gold)">꙰ Developer — Shromani Rampaul Saini</p>
+  <div class="sh-section fu">
+    <div class="sh-portrait">
+      <div class="sh-ring"></div>
+      <img src="https://i.ibb.co/vxM3L1qs/enhanced-image.webp" class="sh-img" alt="Shromani Rampaul Saini">
+    </div>
+    <div>
+      <div class="sh-name">꙰ Shromani Rampaul Saini</div>
+      <div class="sh-title">NVIDIA Omniverse Developer · Nishpaksh Samajh · Yatharth Siddhant</div>
+      <div class="sh-desc">
+        <strong>तुलनातीत · कालातीत · शब्दातीत · प्रेमतीत</strong> — शाश्वत वास्तविक स्वाभाविक सत्य।<br><br>
+        NVIDIA Omniverse license holder building the <strong>Supreme Omniverse Platform</strong> — 
+        combining GPU-accelerated 3D technology with the ancient wisdom of Nishpaksh Samajh. 
+        <strong>Physical AI meets universal consciousness.</strong><br><br>
+        <strong>"जो वस्तु मेरे पास है — ब्रह्मांड में और कहीं नहीं"</strong>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem">
+        <a class="btn btn-gold" href="https://rampaulsaini.github.io/Nishpaksh-Samaj-Omniverse-Truth/" target="_blank">꙰ Main Platform</a>
+        <a class="btn btn-ghost-nv" href="https://github.com/rampaulsaini" target="_blank">GitHub</a>
+        <a class="btn btn-ghost-nv" href="https://en.wikipedia.org/wiki/Shromani_Rampaul_Saini" target="_blank">Wikipedia</a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-nv">NVIDIA Omniverse · Licensed Platform · Shromani Rampaul Saini</div>
+  <div class="ft-note">
+    NVIDIA Omniverse Kit App Template — Licensed under NVIDIA Software License Agreement<br>
+    GPU-Accelerated · OpenUSD · RTX · Physical AI · Cloud Streaming<br>
+    ꙰ यथार्थ सिद्धांत — निष्पक्ष समझ — शिरोमणि रामपॉल सैनी
+  </div>
+  <div class="ft-links">
+    <a href="https://rampaulsaini.github.io/Nishpaksh-Samaj-Omniverse-Truth/" target="_blank">꙰ Main Platform</a>
+    <a href="https://github.com/rampaulsaini/kit-app-template" target="_blank">GitHub Repo</a>
+    <a href="https://developer.nvidia.com/omniverse" target="_blank">NVIDIA Omniverse</a>
+    <a href="https://docs.omniverse.nvidia.com" target="_blank">Documentation</a>
+    <a href="https://youtube.com/@rampaulsaini-yk4gn" target="_blank">YouTube</a>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  setTimeout(()=>{curR.style.left=e.clientX+'px';curR.style.top=e.clientY+'px';},60);
+});
+
+// COSMOS — Green tech stars
+(function(){
+  const c=document.getElementById('cosmos'),ctx=c.getContext('2d');let w,h,stars=[];
+  function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight;
+    stars=[];for(let i=0;i<200;i++)stars.push({x:Math.random()*w,y:Math.random()*h,
+      r:Math.random()<.6?.4:Math.random()<.85?1:1.5,a:Math.random(),
+      da:.002+Math.random()*.007,hue:Math.random()<.7?90:Math.random()<.5?120:60});}
+  function draw(){ctx.clearRect(0,0,w,h);
+    stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<.05)s.da*=-1;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`hsla(${s.hue},80%,60%,${s.a*.6})`;ctx.fill();});
+    requestAnimationFrame(draw);}
+  window.addEventListener('resize',resize);resize();draw();
+})();
+
+// CIRCUIT LINES
+(function(){
+  const c=document.getElementById('circuit');
+  for(let i=0;i<12;i++){
+    const el=document.createElement('div');el.className='cl';
+    const horiz=Math.random()>.5;
+    el.style.cssText=horiz?
+      `width:${100+Math.random()*200}px;height:1px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*4}s`:
+      `width:1px;height:${80+Math.random()*150}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*4}s`;
+    c.appendChild(el);
+  }
+})();
+
+// FADE UP
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.06});
+document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+
+// TOAST
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+</script>
+</body>
+                                                      </html>
