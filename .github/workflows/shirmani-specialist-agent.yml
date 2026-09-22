@@ -1,0 +1,32 @@
+name: Shirmani Specialist Agent — app-template
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "factory-agent.json"
+      - "factory-agent.py"
+      - ".github/workflows/shirmani-specialist-agent.yml"
+  schedule:
+    - cron: "31 */6 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Run deterministic specialist agent
+        run: python3 factory-agent.py
+      - name: Validate manifest
+        run: python3 -m json.tool agent-output/manifest.json >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shirmani-app-template-agent-manifest
+          path: agent-output/manifest.json
