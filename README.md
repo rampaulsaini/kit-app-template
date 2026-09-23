@@ -45,6 +45,25 @@ For a beginner-friendly introduction to application development using the Omnive
 
 These resources empower developers at all experience levels to fully utilize the `kit-app-template` repository and the Omniverse Kit SDK.
 
+## Federation & Research Integration
+
+This repository also participates in the Omniverse federation intake layer used by the connected research workflow.
+
+### Federation Intake
+
+The `Omniverse Federation Intake` workflow accepts either a `repository_dispatch` event of type `omniverse_federation_job` or a manual `workflow_dispatch`. Incoming briefs are recorded as receipt-only JSON files under `federation/inbox/`.
+
+The intake layer is deliberately bounded and non-executing:
+- Federation briefs are limited to 4,000 characters.
+- Intake executions are serialized to reduce concurrent receipt-write races.
+- Incoming payload content is recorded; it is not treated as executable instructions.
+- No secrets are written into federation receipts.
+- Irreversible actions remain subject to human review.
+- A receipt or generated artifact is not, by itself, scientific verification, accreditation, or proof of a research claim.
+
+For operational details, see `.github/workflows/omniverse-federation-intake.yml` and the repository's federation status artifacts.
+
+
 ## Table of Contents
 - [Overview](#overview)
 - [Prerequisites and Environment Setup](#prerequisites-and-environment-setup)
