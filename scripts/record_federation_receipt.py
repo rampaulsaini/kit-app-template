@@ -42,7 +42,7 @@ def main():
         raise SystemExit("Receipt path already exists; refusing to overwrite.")
     with destination.open("x", encoding="utf-8") as handle:
         json.dump(payload, handle, ensure_ascii=False, indent=2)
-        handle.write("\\n")
+        handle.write("\n")
     print(f"RECEIPT_WRITTEN {destination}")
 
 
