@@ -25,7 +25,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Record federation receipt
         env:
-          BRIEF: ${{ inputs.brief }}
+          BRIEF: ${{ github.event.client_payload.brief || inputs.brief || '' }}
+          RECEIVER_RUN_ID: ${{ github.run_id }}
           EVENT: ${{ github.event_name }}
           SOURCE: ${{ github.event.client_payload.source_repository }}
           MODE: ${{ github.event.client_payload.automation_mode }}
@@ -39,6 +40,7 @@ jobs:
           payload={
             "schema_version":1,
             "received_at":stamp.isoformat(),
+            "receiver_run_id":os.getenv("RECEIVER_RUN_ID",""),
             "event":os.getenv("EVENT",""),
             "source_repository":os.getenv("SOURCE") or "manual",
             "automation_mode":os.getenv("MODE") or "MANUAL",
@@ -53,7 +55,7 @@ jobs:
           brief=payload["brief"]
           if len(brief) > 4000:
               raise SystemExit("Federation brief exceeds the 4000-character safety limit.")
-          path="federation/inbox/"+stamp.strftime("%Y%m%dT%H%M%SZ")+".json"
+          path="federation/inbox/"+stamp.strftime("%Y%m%dT%H%M%SZ")+"-"+os.getenv("RECEIVER_RUN_ID","unknown")+".json"
           with open(path,"w",encoding="utf-8") as f: json.dump(payload,f,ensure_ascii=False,indent=2)
           PY
       - name: Commit receipt
